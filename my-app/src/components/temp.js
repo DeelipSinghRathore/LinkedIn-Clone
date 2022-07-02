@@ -1,0 +1,125 @@
+<div>
+                  <Article>
+                     <>{console.log(article.actor.image)}</>
+                    {/* <>console.log(key+" "+article)</> */}
+                    <SharedActor>
+                      <a>
+                        <img src={article.actor.image} alt='' />
+                        <div>
+                          <span>{article.actor.title}</span>
+                          <span>{article.actor.description}</span>
+                          <span>
+                            {/* {article
+                              .actor.date.toDate()
+                              .toLocalDateString()} */}
+                              22 jan 2020
+                          </span>
+                        </div>
+                      </a>
+                      <button>
+                        <img src='/images/ellipsis.svg' alt='' />
+                      </button>
+                    </SharedActor>
+                    <Description>{article.description}</Description>
+                    <SharedImg>
+                      <a>
+                        {!article.shareImg && article.video ? (
+                          <ReactPlayer
+                            width={'100%'}
+                            url={article.video}
+                          />
+                        ) : (
+                          article.shareImg && (
+                            <img src={article.shareImg} />
+                          )
+                        )}
+                      </a>
+                    </SharedImg>
+                    <SocialCounts>
+                      <li>
+                        <button>
+                          <img
+                            src='/images/like.svg'
+                            width='16'
+                            height='16'
+                            alt=''
+                          />
+                          <img
+                            src='/images/Linkedin-Love-Icon-Heart250.png'
+                            width='16'
+                            height='16'
+                            alt=''
+                          />
+                          <img
+                            src='/images/Linkedin-Celebrate-Icon-ClappingHands.png'
+                            width='16'
+                            height='16'
+                            alt=''
+                          />
+                          <img
+                            src='/images/Linkedin-Curious-Icon-PurpleSmiley250.png'
+                            width='16'
+                            height='16'
+                            alt=''
+                          />
+                          <img
+                            src='/images/Linkedin-Insightful-Icon-Lamp250.png'
+                            width='16'
+                            height='16'
+                            alt=''
+                          />
+                          <img
+                            src='/images/Linkedin-Support-Icon-HeartinHand250.png'
+                            width='16'
+                            height='16'
+                            alt=''
+                          />
+                          <span>75</span>
+                        </button>
+                      </li>
+                      <li>
+                        <a>comment</a>
+                      </li>
+                    </SocialCounts>
+                    <SocialActions>
+                      <button>
+                        <img
+                          src='/images/like.svg'
+                          width='16'
+                          height='16'
+                          alt=''
+                        />
+                        <span>Like</span>
+                      </button>
+                      <button>
+                        <img
+                          src='/images/comment.svg'
+                          width='16'
+                          height='16'
+                          alt=''
+                        />
+                        <span>Comments</span>
+                      </button>
+                      <button>
+                        <img
+                          src='/images/share.svg'
+                          width='16'
+                          height='16'
+                          alt=''
+                        />
+                        <span>Share</span>
+                      </button>
+                      <button>
+                        <img
+                          src='/images/send.png'
+                          width='16'
+                          height='16'
+                          alt=''
+                        />
+                        <span>Send</span>
+                      </button>
+                    </SocialActions>
+                  </Article>
+                  </div>
+                ))}
+                </div>
