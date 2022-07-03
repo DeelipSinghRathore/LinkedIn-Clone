@@ -18,90 +18,92 @@ const Header = (props) => {
   }, []);
 
   return (
-  <Tester>
-   <Container>
-      <Content>
-        <Logo>
-          <a href='/home'>
-            <img src='/images/home-logo.svg' alt='' />
-          </a>
-        </Logo>
-        <Search>
-          <div>
-            <input type='text' placeholder='Search' />
-          </div>
-          <SearchIcon>
-            <img src='/images/search-icon.svg' alt='' />
-          </SearchIcon>
-        </Search>
-        <Nav>
-          <NavListWrap>
-            <NavList className='active'>
-              <a>
-                <img src='/images/nav-home.svg' alt='' />
-                <span>Home</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <img src='/images/nav-network.svg' alt='' />
-                <span>My Network</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <img src='/images/nav-jobs.svg' alt='' />
-                <span>Jobs</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <img src='/images/nav-messaging.svg' alt='' />
-                <span>Messaging</span>
-              </a>
-            </NavList>
-            <NavList>
-              <a>
-                <img src='/images/nav-notifications.svg' alt='' />
-                <span>Notifications </span>
-              </a>
-            </NavList>
-            <User>
-              <a>
-                {currentUser && currentUser.photoURL ? (
-                  <img src={currentUser.photoURL}></img>
-                ) : (
-                  <img src='/images/user.svg' alt='' />
-                )}
-                <span>
-                  Me
-                  <img src='/images/down-icon.svg' alt='' />
-                </span>
-              </a>
-              <SignOut onClick={()=>auth.signOut()}>
-                <a>Sign Out</a>
-              </SignOut>
-            </User>
-            <Work>
-              <a href='/'>
-                <img src='/images/nav-work.svg' alt='' />
-                <span>
-                  Work
-                  <img src='/images/down-iocn.svg' alt='' />
-                </span>
-              </a>
-            </Work>
-          </NavListWrap>
-        </Nav>
-      </Content>
-    </Container>
+    <Tester>
+      <Container>
+        <Content>
+          <Logo>
+            <a href='/home'>
+              <img src='/images/home-logo.svg' alt='' />
+            </a>
+          </Logo>
+          <Search>
+            <div>
+              <input type='text' placeholder='Search' />
+            </div>
+            <SearchIcon>
+              <img src='/images/search-icon.svg' alt='' />
+            </SearchIcon>
+          </Search>
+          <Nav>
+            <NavListWrap>
+              <NavList className='active'>
+                <a>
+                  <img src='/images/nav-home.svg' alt='' />
+                  <span>Home</span>
+                </a>
+              </NavList>
+              <NavList>
+                <a>
+                  <img src='/images/nav-network.svg' alt='' />
+                  <span>My Network</span>
+                </a>
+              </NavList>
+              <NavList>
+                <a>
+                  <img src='/images/nav-jobs.svg' alt='' />
+                  <span>Jobs</span>
+                </a>
+              </NavList>
+              <NavList>
+                <a>
+                  <img src='/images/nav-messaging.svg' alt='' />
+                  <span>Messaging</span>
+                </a>
+              </NavList>
+              <NavList>
+                <a>
+                  <img src='/images/nav-notifications.svg' alt='' />
+                  <span>Notifications </span>
+                </a>
+              </NavList>
+              <User>
+                <a>
+                  {currentUser && currentUser.photoURL ? (
+                    <img src={currentUser.photoURL}></img>
+                  ) : (
+                    <img src='/images/user.svg' alt='' />
+                  )}
+                  <span>
+                    Me
+                    <img src='/images/down-icon.svg' alt='' />
+                  </span>
+                </a>
+                <SignOut onClick={() => auth.signOut()}>
+                  <button>SignOut</button>
+                </SignOut>
+              </User>
+              <Work>
+                <a>
+                  <img src='/images/nav-work.svg' alt='' />
+                  <span>
+                    Work
+                    <img src='/images/down-iocn.svg' alt='' />
+                  </span>
+                </a>
+              </Work>
+            </NavListWrap>
+          </Nav>
+        </Content>
+      </Container>
     </Tester>
-)};
+  );
+};
 
 const Tester = styled.div`
-
-  position: fixed;
-  z-index: 1000;
+  position: sticky;
+  z-index: 10000;
+  top: 0;
+  margin-top: -7px;
 `;
 const NavListWrap = styled.ul`
   display: flex;
@@ -125,6 +127,9 @@ const NavList = styled.li`
   display: flex;
   align-items: center;
   a {
+    &:hover {
+      cursor: pointer;
+    }
     align-items: center;
     background: transparent;
     display: flex;
@@ -133,7 +138,7 @@ const NavList = styled.li`
     font-weight: 400;
     justify-content: center;
     line-height: 1.5;
-    min-height: 42px;
+    min-height: 50px;
     min-width: 80px;
     position: relative;
     text-decoration: none;
@@ -201,7 +206,12 @@ const Search = styled.div`
     }
   }
 `;
-const Logo = styled.span``;
+const Logo = styled.span`
+  margin-top: 4px;
+  img {
+   height: 34px;
+  }
+`;
 const Container = styled.div`
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -220,15 +230,26 @@ const Content = styled.div`
 `;
 const SignOut = styled.div`
   position: absolute;
-  top: 45px;
+  top: 42px;
   background: white;
   border-radius: 0 0 5px 5px;
-  width: 100px;
-  height: 40px;
+  background-color: white;
+  border-radius: 4px;
+  width: 80pxpx;
+  height: 25px;
+  margin-left: 15px;
   font-size: 16px;
+  border-radius: 5px;
   transition-duration: 167ms;
   text-align: center;
   display: none;
+  button {
+    background-color: whitesmoke;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
 `;
 const User = styled(NavList)`
   a > svg {
@@ -248,6 +269,7 @@ const User = styled(NavList)`
     ${SignOut} {
       align-items: center;
       display: flex;
+      transition-delay: 3s ease-out;
       justify-content: center;
     }
   }

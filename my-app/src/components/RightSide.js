@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 const RightSide = () => {
-
   const [currentUser, setcurrentUser] = useState(null);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -16,47 +15,53 @@ const RightSide = () => {
   }, []);
 
   return (
-    currentUser && 
-  <Container>
-      <FollowCard>
+    currentUser && (
+      <Container>
+        <FollowCard>
           <Title>
-              <h2>Add to your feed</h2>
-               <img src="/images/feed-icon.svg" alt="" />
+            <h2>Add to your feed</h2>
+            <img src='/images/feed-icon.svg' alt='' />
           </Title>
           <FeedList>
-              <li>
-                  <a>
-                      <Avatar/>
-                  </a>
-                  <div>
-                      <span>#Linkedin</span>
-                      <button>Follow</button>
-                  </div>
-              </li>
-              <li>
-                  <a>
-                      <Avatar/>
-                  </a>
-                  <div>
-                      <span>#Video</span>
-                      <button>Follow</button>
-                  </div>
-              </li>
+            <li>
+              <a>
+                <Avatar />
+              </a>
+              <div>
+                <span>#Linkedin</span>
+                <button>Follow</button>
+              </div>
+            </li>
+            <li>
+              <a>
+                <Avatar />
+              </a>
+              <div>
+                <span>#Video</span>
+                <button>Follow</button>
+              </div>
+            </li>
           </FeedList>
           <Recommendation>
-              View all recommendation
-              <img src="/images/right-icon.svg" alt="" />
-
+            View all recommendation
+            <img src='/images/right-icon.svg' alt='' />
           </Recommendation>
-      </FollowCard>
-      <BannerCard>
-           <img src="/images/dream-job.jpg" alt="" />
-      </BannerCard>
-  </Container>
-  )
+        </FollowCard>
+        <BannerCard>
+          <img src='/images/dream-job.jpg' alt='' />
+        </BannerCard>
+      </Container>
+    )
+  );
 };
 const Container = styled.div`
   grid-area: rightside;
+  position: sticky;
+  top: 10rem;
+  height: 10rem;;
+  width: 20rem;
+  flex-grow: 1;
+  flex-basis: 300px;
 `;
 
 const FollowCard = styled.div`

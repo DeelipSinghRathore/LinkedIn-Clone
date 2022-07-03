@@ -18,7 +18,6 @@ import { async } from '@firebase/util';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 
-
 export const setLoading = (status) => ({
   type: SET_LOADING_STATUS,
   status: status,
@@ -41,8 +40,7 @@ const PostModal = (props) => {
 
   useEffect(() => {
     setShowModal(props.showModal);
-  }, [props.showModal])
-  
+  }, [props.showModal]);
 
   const handleChange = (e) => {
     const image = e.target.files[0];
@@ -132,7 +130,12 @@ const PostModal = (props) => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             // console.log('File available at', downloadURL);
             const currDate = new Date();
-            setDoc(doc(db, 'articles',"posts -> "+`${currDate}`), {
+            const likes = new Set();
+            likes.add('Deelip');
+            likes.add('Deelip');
+            likes.add('ChhoteLal');
+            console.log('last line');
+            setDoc(doc(db, 'articles', 'posts -> ' + `${currDate}`), {
               actor: {
                 description: currentUser.email,
                 title: currentUser.displayName,
@@ -142,8 +145,11 @@ const PostModal = (props) => {
               video: payload.video,
               shareImg: downloadURL,
               comment: 0,
+              // like: likes,
               description: payload.description,
             });
+
+            console.log('last line');
           });
 
           // dispatch(setLoading(false));
@@ -151,7 +157,8 @@ const PostModal = (props) => {
       );
     } else if (payload.video) {
       const currDate = new Date();
-      setDoc(doc(db, 'articles',"posts -> "+`${currDate}`), {
+      const likes = new Set();
+      setDoc(doc(db, 'articles', 'posts -> ' + `${currDate}`), {
         actor: {
           description: currentUser.email,
           title: currentUser.displayName,
@@ -161,6 +168,7 @@ const PostModal = (props) => {
         video: payload.video,
         shareImg: '',
         comment: 0,
+        // like: likes,
         description: payload.description,
       });
 
@@ -170,93 +178,98 @@ const PostModal = (props) => {
     reset();
     console.log('Completed');
   };
-  
+
   // ---------------------
   return (
-    currentUser && showModal === 'open' && <>
-      <Container>
-        <Content>
-          <Header>
-            <h2>Create a Post</h2>
-            <button onClick={(event) => reset(event)}>
-              <img src='/images/close-icon.png' alt='' width='100%' />
-            </button>
-          </Header>
-          <SharedContent>
-            <UserInfo>
-              {/* {props.user.photoURL ? (
+    currentUser &&
+    showModal === 'open' && (
+      <>
+        <Container>
+          <Content>
+            <Header>
+              <h2>Create a Post</h2>
+              <button onClick={(event) => reset(event)}>
+                <img src='/images/close-icon.png' alt='' width='100%' />
+              </button>
+            </Header>
+            <SharedContent>
+              <UserInfo>
+                {/* {props.user.photoURL ? (
                   <img src='/images/user.svg' />
                 ) : (
                   <img src='/images/user.svg' alt='' />
                 )} */}
-              <img src={currentUser.photoURL} alt='' />
-              <span>Name</span>
-            </UserInfo>
-            <Editor>
-              <textarea
-                value={editorText}
-                onChange={(e) => setEditorText(e.target.value)}
-                placeholder='What do you want to share with the linkedin community ?'
-                autoFocus={true}
-              />
-              {assetArea === 'image' ? (
-                <UploadImage>
-                  <input
-                    type='file'
-                    accept='image/gif , image/png, image/jpeg ,image/jpg'
-                    name='image'
-                    id='file'
-                    style={{ display: 'none' }}
-                    onChange={handleChange}
-                  />
-                  <p>
-                    <label htmlFor='file'>Select an Image to share</label>
-                  </p>
-                  {shareImage && <img src={URL.createObjectURL(shareImage)} />}
-                </UploadImage>
-              ) : (
-                assetArea === 'media' && (
-                  <>
+                <img src={currentUser.photoURL} alt='' />
+                <span>{currentUser.displayName}</span>
+              </UserInfo>
+              <Editor>
+                <textarea
+                  value={editorText}
+                  onChange={(e) => setEditorText(e.target.value)}
+                  placeholder='What do you want to share with the linkedin community ?'
+                  autoFocus={true}
+                />
+                {assetArea === 'image' ? (
+                  <UploadImage>
                     <input
-                      type='text'
-                      placeholder='Please input a video link'
-                      value={videoLink}
-                      onChange={(e) => setVideoLink(e.target.value)}
+                      type='file'
+                      accept='image/gif , image/png, image/jpeg ,image/jpg'
+                      name='image'
+                      id='file'
+                      style={{ display: 'none' }}
+                      onChange={handleChange}
                     />
-                    {videoLink && (
-                      <ReactPlayer width={'100%'} url={videoLink} />
+                    <p>
+                      <label htmlFor='file'>Select an Image to share</label>
+                    </p>
+                    {shareImage && (
+                      <img src={URL.createObjectURL(shareImage)} />
                     )}
-                  </>
-                )
-              )}
-            </Editor>
-          </SharedContent>
-          <ShareCreation>
-            <AttachAssets>
-              <AssetButton onClick={() => switchAssetArea('image')}>
-                <img src='/images/photo-icon.svg' alt='' />
-              </AssetButton>
-              <AssetButton onClick={() => switchAssetArea('media')}>
-                <img src='/images/video-icon.svg' alt='' />
-              </AssetButton>
-            </AttachAssets>
-            <ShareComment>
-              <AssetButton>
-                <img src='/images/share-comment.svg' alt='' />
-                Anyone
-              </AssetButton>
-            </ShareComment>
-            <PostButton
-              // disabled={editorText ? true : false}
-              onClick={submitted}
-            >
-              Post
-            </PostButton>
-          </ShareCreation>
-        </Content>
-      </Container>
-      ){/* } */}
-    </>
+                  </UploadImage>
+                ) : (
+                  assetArea === 'media' && (
+                    <>
+                      <input
+                        type='text'
+                        placeholder='Please input a video link'
+                        value={videoLink}
+                        onChange={(e) => setVideoLink(e.target.value)}
+                      />
+                      {videoLink && (
+                        <ReactPlayer width={'100%'} url={videoLink} />
+                      )}
+                    </>
+                  )
+                )}
+              </Editor>
+            </SharedContent>
+            <ShareCreation>
+              <AttachAssets>
+                <AssetButton onClick={() => switchAssetArea('image')}>
+                  <img src='/images/photo-icon.svg' alt='' />
+                </AssetButton>
+                <AssetButton onClick={() => switchAssetArea('media')}>
+                  <img src='/images/video-icon.svg' alt='' />
+                </AssetButton>
+              </AttachAssets>
+              <ShareComment>
+                <AssetButton>
+                  <img src='/images/share-comment.svg' alt='' />
+                  Anyone
+                </AssetButton>
+              </ShareComment>
+              <PostButton
+                // disabled={editorText ? true : false}
+                onClick={submitted}
+              >
+                Post
+              </PostButton>
+            </ShareCreation>
+          </Content>
+        </Container>
+        ){/* } */}
+      </>
+    )
   );
 };
 const Container = styled.div`
@@ -265,7 +278,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 10000;
+  z-index: 1000000;
   color: black;
   background-color: rgba(0, 0, 0, 0.8);
   animation: fadeIn 0.3s;

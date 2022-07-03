@@ -10,12 +10,13 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { doc, getDocs, collection } from 'firebase/firestore';
 import { db } from '../firebase';
-import { query, orderBy } from "firebase/firestore";
+import { query, orderBy } from 'firebase/firestore';
 
 const Main = (props) => {
   const [showModal, setShowModal] = useState('close');
   const [ArticleSet, setArticleSet] = useState(null);
   const [currentUser, setcurrentUser] = useState(null);
+  const [Click, setClick] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -25,8 +26,12 @@ const Main = (props) => {
     });
   }, []);
 
+  const Like = () => {};
   useEffect(() => {
-    const ref = query(collection(db, 'articles'),orderBy("actor.date", "desc"));
+    const ref = query(
+      collection(db, 'articles'),
+      orderBy('actor.date', 'desc')
+    );
     var col = [];
     getDocs(ref).then((snapshot) => {
       setTimeout(() => {
@@ -59,6 +64,40 @@ const Main = (props) => {
   useEffect(() => {
     console.log(ArticleSet);
   }, [ArticleSet]);
+
+  function findDate(date) {
+    var yr = date.getFullYear();
+    var mon = date.getMonth();
+    var day = date.getDate();
+    var hrs = date.getHours();
+    var min = date.getMinutes();
+    var ans;
+
+    var mins;
+    if (min < 10) {
+      mins = '0' + min;
+    } else {
+      mins = '' + min;
+    }
+    var str;
+    if (hrs > 12) {
+      str = 'PM ';
+      hrs -= 12;
+    } else {
+      str = 'AM ';
+    }
+    var hrrs;
+
+    if (hrs < 10) {
+      hrrs = '0' + hrs;
+    } else {
+      hrrs = '' + hrs;
+    }
+
+    ans = hrrs + ':' + mins + str + day + '/' + mon + '/' + yr;
+
+    return ans;
+  }
 
   return (
     ArticleSet && (
@@ -127,9 +166,10 @@ const Main = (props) => {
                       <a>
                         <img src={article.actor.image} alt='' />
                         <div>
-                          <span>{article.actor.title}</span>
-                          <span>{article.actor.description}</span>
-                          {/* <span>{article.actor.date.toDate().toLocalDateString()}</span> */}
+                          <span className='name'>{article.actor.title}</span>
+                          {/* <br /> */}
+                          {/* <span>{article.actor.description}</span> */}
+                          <span className='date'>{findDate(article.actor.date.toDate())}</span>
                         </div>
                       </a>
                       <button>
@@ -167,24 +207,6 @@ const Main = (props) => {
                             height='16'
                             alt=''
                           />
-                          <img
-                            src='/images/Linkedin-Curious-Icon-PurpleSmiley250.png'
-                            width='16'
-                            height='16'
-                            alt=''
-                          />
-                          <img
-                            src='/images/Linkedin-Insightful-Icon-Lamp250.png'
-                            width='16'
-                            height='16'
-                            alt=''
-                          />
-                          <img
-                            src='/images/Linkedin-Support-Icon-HeartinHand250.png'
-                            width='16'
-                            height='16'
-                            alt=''
-                          />
                           <span>75</span>
                         </button>
                       </li>
@@ -193,11 +215,11 @@ const Main = (props) => {
                       </li>
                     </SocialCounts>
                     <SocialActions>
-                      <button>
+                      <button onClick={Like}>
                         <img
                           src='/images/like.svg'
-                          width='16'
-                          height='16'
+                          width='20'
+                          height='20'
                           alt=''
                         />
                         <span>Like</span>
@@ -205,8 +227,8 @@ const Main = (props) => {
                       <button>
                         <img
                           src='/images/comment.svg'
-                          width='16'
-                          height='16'
+                          width='20'
+                          height='20'
                           alt=''
                         />
                         <span>Comments</span>
@@ -214,8 +236,8 @@ const Main = (props) => {
                       <button>
                         <img
                           src='/images/share.svg'
-                          width='16'
-                          height='16'
+                          width='20'
+                          height='20'
                           alt=''
                         />
                         <span>Share</span>
@@ -223,8 +245,8 @@ const Main = (props) => {
                       <button>
                         <img
                           src='/images/send.png'
-                          width='16'
-                          height='16'
+                          width='20'
+                          height='20'
                           alt=''
                         />
                         <span>Send</span>
@@ -303,7 +325,7 @@ const ShareBox = styled(CommonCard)`
           margin: 0 4px 0 -2px;
         }
         span {
-          color: #70b5f9;
+          color: #686a6c;
         }
       }
     }
@@ -331,26 +353,39 @@ const SharedActor = styled.div`
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      & > div {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        flex-basis: 0;
-        margin-left: 8px;
-        overflow: hidden;
-      }
-      span {
-        text-align: left;
-        &:first-child {
-          font-size: 14px;
+    }
+    & > div {
+      /* display: flex; */
+      /* flex-direction: column; */
+      /* flex-grow: 1;
+      flex-basis: 0; */
+      margin-left: 8px;
+      overflow: hidden;
+
+      display: grid;
+      grid-template-areas: 'leftside main rightside';
+      grid-template-columns: minmax(0, 8fr) minmax(300px, 4fr);
+
+      padding-top: 13px;
+
+        .name {
+          text-align: left;
+          font-size: 20px;
           font-weight: 700;
           color: rgba(0 0 0 1);
         }
-        &:nth-child(n + 1) {
-          font-size: 12px;
-          color: rgba(0 0 0 0.6);
+
+        .date {
+          padding-top:2px;
+          justify-content: center;
+          font-size: 15px;
+          text-align: right;
         }
-      }
+        /* &:last-child {
+          font-size: 17px;
+          text-align: right;
+          color: rgba(0 0 0 0.6);
+        } */
     }
   }
   button {
@@ -365,6 +400,9 @@ const SharedActor = styled.div`
 const Description = styled.div`
   padding: 0 16px;
   overflow: hidden;
+  overflow: hidden;
+  text-overflow: ellipsis;
+   font-family: 'Bitter', serif;;
   color: rgba(0 0 0 0.9);
   text-align: left;
 `;
@@ -404,19 +442,32 @@ const SocialActions = styled(Article)`
   display: flex;
   justify-content: center;
   margin: 0;
-  min-height: 40px;
+  min-height: 45px;
   padding: 4px 8px;
   button {
     display: inline-flex;
     align-items: center;
-    padding: 8px;
-    color: #0a66c2;
+    padding: 15px;
+    border-radius: 4px;
+    font-weight: 300;
+    cursor: pointer;
+    color: #686a6c;
+    font-family-sans: -apple-system, system-ui, BlinkMacSystemFont, Segoe UI,
+      Roboto, Helvetica Neue, Fira Sans, Ubuntu, Oxygen, Oxygen Sans, Cantarell,
+      Droid Sans, Apple Color Emoji, Segoe UI Emoji, Segoe UI Emoji,
+      Segoe UI Symbol, Lucida Grande, Helvetica, Arial, sans-serif;
+    font-size: 15px;
     border: none;
+    width: 25%;
+    justify-content: center;
     background-color: white;
     @media (min-width: 768px) {
       span {
         margin-left: 8px;
       }
+    }
+    &:hover {
+      background-color: #ededed;
     }
   }
 `;

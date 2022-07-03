@@ -14,72 +14,75 @@ const LeftSide = (props) => {
       }
     });
   }, []);
-
   return (
-    (
-      <Container>
-        <ArtCard>
-          <UserInfo>
-            <CardBackground />
-            <a>
-              <Photo>
-                
-                {  currentUser&&currentUser.photoURL ?
-                  <img src={currentUser.photoURL} alt="" />
-                  :
-                  <img src="./image/user-icon.svg"/>
-                  
-                  }
-              </Photo>
-              <Link>Welcome, {
-                currentUser&&currentUser.displayName?
-                currentUser.displayName.split(' ')[0]:
-                'there'
-              }</Link>
-            </a>
-            <a>
-              <AddPhotoText>Add a photo</AddPhotoText>
-            </a>
-          </UserInfo>
-          <Widget>
-            <a>
-              <div>
-                <span>connections</span>
-                <span>Grow your network</span>
-              </div>
-              <img src='/images/widget-icon.svg' alt='' />
-            </a>
-          </Widget>
-          <Item>
-            <span>
-              <img src='/images/item-icon.svg' alt='' />
-              My Items
-            </span>
-          </Item>
-        </ArtCard>
-        <CommunityCard>
+    <Container>
+      <ArtCard>
+        <UserInfo>
+          <CardBackground />
           <a>
-            <span>Groups</span>
+            <Photo>
+              {currentUser && currentUser.photoURL ? (
+                <img src={currentUser.photoURL} alt='' />
+              ) : (
+                <img src='./image/user-icon.svg' />
+              )}
+            </Photo>
+            <Link>
+              Welcome,{' '}
+              {currentUser && currentUser.displayName
+                ? currentUser.displayName.split(' ')[0]
+                : 'there'}
+            </Link>
           </a>
           <a>
-            <span>
-              Events
-              <img src='/images/plus-icon.svg' alt='' />
-            </span>
+            <AddPhotoText>Add a photo</AddPhotoText>
           </a>
+        </UserInfo>
+        <Widget>
           <a>
-            <span>Follow Hashtags</span>
+            <div>
+              <span>connections</span>
+              <span>Grow your network</span>
+            </div>
+            <img src='/images/widget-icon.svg' alt='' />
           </a>
-          <a>
-            <span>Discover more</span>
-          </a>
-        </CommunityCard>
-      </Container>
-    )
+        </Widget>
+        <Item>
+          <span>
+            <img src='/images/item-icon.svg' alt='' />
+            My Items
+          </span>
+        </Item>
+      </ArtCard>
+      <CommunityCard>
+        <a>
+          <span>Groups</span>
+        </a>
+        <a>
+          <span>
+            Events
+            <img src='/images/plus-icon.svg' alt='' />
+          </span>
+        </a>
+        <a>
+          <span>Follow Hashtags</span>
+        </a>
+        <a>
+          <span>Discover more</span>
+        </a>
+      </CommunityCard>
+    </Container>
   );
 };
 const Container = styled.div`
+  margin-left: 35px;
   grid-area: leftside;
+  position: sticky;
+  top: 10rem;
+  height: 10rem;;
+  width: 20rem;
+  flex-grow: 1;
+  flex-basis: 300px;
 `;
 const ArtCard = styled.div`
   text-align: center;
@@ -121,7 +124,7 @@ const Photo = styled.div`
   border: 2px solid white;
   margin: -38px auto 12px;
   border-radius: 50%;
-  img{
+  img {
     width: 100%;
     border-radius: 50px;
   }
