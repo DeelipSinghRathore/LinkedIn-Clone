@@ -17,6 +17,16 @@ const Main = (props) => {
   const [ArticleSet, setArticleSet] = useState(null);
   const [currentUser, setcurrentUser] = useState(null);
   const [Click, setClick] = useState(null);
+  const [readMore, setReadMore] = useState(false);
+  const [linkName, setLinkName] = useState(null);
+
+  useEffect(() => {
+    if (readMore) {
+      setLinkName('see less');
+    } else {
+      setLinkName('see more');
+    }
+  }, [readMore]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -169,14 +179,27 @@ const Main = (props) => {
                           <span className='name'>{article.actor.title}</span>
                           {/* <br /> */}
                           {/* <span>{article.actor.description}</span> */}
-                          <span className='date'>{findDate(article.actor.date.toDate())}</span>
+                          <span className='date'>
+                            {findDate(article.actor.date.toDate())}
+                          </span>
                         </div>
                       </a>
                       <button>
                         <img src='/images/ellipsis.svg' alt='' />
                       </button>
                     </SharedActor>
-                    <Description>{article.description}</Description>
+                    <Description>
+                        {article.description.substring(0, 200)}
+                        {readMore && article.description.substring(200)}
+                        <a
+                          className='read-more-link'
+                          onClick={() => {
+                            setReadMore(!readMore);
+                          }}
+                        >
+                          <h2>{linkName}</h2>
+                        </a>
+                    </Description>
                     <SharedImg>
                       <a>
                         {!article.shareImg && article.video ? (
@@ -368,20 +391,27 @@ const SharedActor = styled.div`
 
       padding-top: 13px;
 
-        .name {
-          text-align: left;
-          font-size: 20px;
-          font-weight: 700;
-          color: rgba(0 0 0 1);
-        }
+      .name {
+        font-family: 'Bitter', serif;
+font-family: 'Cormorant Garamond', serif;
+font-family: 'Joan', serif;
+/* font-family: 'Satisfy', cursive; */
+        text-align: left;
+        font-size: 20px;
+        font-weight: 700;
+        color: rgba(0 0 0 1);
+      }
 
-        .date {
-          padding-top:2px;
-          justify-content: center;
-          font-size: 15px;
-          text-align: right;
-        }
-        /* &:last-child {
+      .date {
+        font-family: 'Bitter', serif;
+font-family: 'Cormorant Garamond', serif;
+font-family: 'Satisfy', cursive;
+        padding-top: 2px;
+        justify-content: center;
+        font-size: 15px;
+        text-align: right;
+      }
+      /* &:last-child {
           font-size: 17px;
           text-align: right;
           color: rgba(0 0 0 0.6);
@@ -402,9 +432,16 @@ const Description = styled.div`
   overflow: hidden;
   overflow: hidden;
   text-overflow: ellipsis;
-   font-family: 'Bitter', serif;;
+  font-family: 'Bitter', serif;
   color: rgba(0 0 0 0.9);
   text-align: left;
+
+  a {
+    color: #0a66c2;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 const SharedImg = styled.div`
   margin-top: 8px;
